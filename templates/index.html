@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+        <div class="jumbotron bg-info text-white"> 
+            <form action="" method="post" role="form">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="name" name="show" placeholder="What is your show?"
+                           required oninvalid="this.setCustomValidity('Please Enter A TV Series')" oninput="this.setCustomValidity('')">
+                    <button type="submit" class="btn btn-success">Seach For Show</button>
+                </div>
+            </form>  
+        </div>
+    </div>
+{% endblock %}
+    
