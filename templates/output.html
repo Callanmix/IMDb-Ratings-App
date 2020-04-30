@@ -5,8 +5,8 @@
     <div class="jumbotron bg-info text-white text-center"> 
         <h1>{{name}}</h1>
     </div>
-    <div class="text-center">
-        <img class="img-responsive rounded" src={{ url_for('static', filename=url) }} width="900" height="650">
+    <div class="text-center img {width:100%} ">
+        <img class="col-md-12 img-responsive rounded" src={{ url_for('static', filename=url) }} width="900" height="650">
     </div>
     <br><br>
 </div>

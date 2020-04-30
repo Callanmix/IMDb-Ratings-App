@@ -40,7 +40,7 @@ function reply_click(){
                     <img class="img-thumbnail rounded" src={{urls[i]}} width="100" height="150">
                 </div>
                 <div class="col-md-1">
-                    <form action="/output/{{ids[i]}}/" method="post" role="form" id="{{ids[i]}}">
+                    <form action="/load_data/{{ids[i]}}/" method="post" role="form" id="{{ids[i]}}">
                         <button type="submit" class="btn btn-success" name="{{ids[i]}}" onClick="reply_click()">This One</button>
                     </form>
                 </div>
