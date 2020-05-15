@@ -1,37 +1,59 @@
+## Import all modules
+# Flask
 from flask import Flask, request, render_template, redirect, url_for
 from wtforms import Form, validators, TextField
+# General
 from imdb import IMDb
 import pandas as pd
 import numpy as np
-from plotnine import *
-import requests, os, io, random
+import requests, os, random, gzip, urllib.request
+# Dash
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+import dash_bootstrap_components as dbc
+from dash.dependencies import Input, Output
+import plotly_express as px
+import plotly.graph_objects as go
+import statsmodels.api as sm
 
-app = Flask(__name__)
 
+# Init the flask server
+server = Flask(__name__)
+
+## Assign some global variables (might be a better way to do this)
 global imdb, ratings
-ratings = pd.read_csv('files/title.ratings.csv')
+
+# Load the up to date rating information
+baseURL = "https://datasets.imdbws.com/"
+filename = "title.ratings.tsv.gz"
+outFilePath = 'files/title.ratings.csv'
+response = urllib.request.urlopen(baseURL + filename)
+with open(outFilePath, 'wb') as outfile:
+    outfile.write(gzip.decompress(response.read()))
+# Load the data
+ratings = pd.read_csv('files/title.ratings.csv', delimiter='\t')
 ratings = ratings.set_index(['tconst'])
+# Init Imdb
 imdb = IMDb()
 
-
-@app.route('/output/', methods=['GET', 'POST'])
+# Final output of Dash App
+@server.route('/output/', methods=['GET', 'POST'])
 def display_output():
     
     files = [file for file in os.listdir('static') if file.endswith('.png')]
     [os.remove('static/'+ filename) for filename in files]
     
-    if request.method == 'POST':
-        
-        plot, filename, title = make_chart(df)
-        
-        return render_template('output.html', name = title, url = filename)
+    if request.method == 'POST':    
+        return redirect('/dash')
     return render_template('wait_page.html')
 
-
+# form for the show entry
 class Show_choices(Form):
     show = TextField('Show:', validators=[validators.DataRequired()])
 
-@app.route('/', methods=['GET', 'POST'])
+## Choose the right show page
+@server.route('/', methods=['GET', 'POST'])
 def index():        
     form = Show_choices(request.form)
     
@@ -47,51 +69,128 @@ def index():
                                year = year, names = names, length = len(names), ids = ids)
     return render_template('index.html')
 
-@app.route('/load_data/<ids>/<std>/', methods=['GET', 'POST'])
-def load_data(ids, std):
+## Wait page: This splits the server load time for heroku 
+@server.route('/load_data/<ids>/', methods=['GET', 'POST'])
+def load_data(ids):
     if request.method == 'POST':
         
         global df
-        df = make_data(ids, std)
+        df = make_data(ids)
         
         return render_template('wait_page.html')
     return render_template('verify_show.html')
 
 
-@app.errorhandler(500)
+@server.errorhandler(500)
 def page_not_found(e):
-    # note that we set the 404 status explicitly
     return render_template('python_error.html')
 
-def make_data(ids, std):
+
+app = dash.Dash(__name__,
+                external_stylesheets=[dbc.themes.BOOTSTRAP],
+                server=server,
+                routes_pathname_prefix='/dash/')
+colors = {
+    'background': '#111111',
+    'text': '#7FDBFF'
+}
+navbar = dbc.Navbar(
+        [
+            html.A(
+                # Use row and col to control vertical alignment of logo / brand
+                dbc.Row(
+                    [
+                        dbc.Col(dbc.NavbarBrand("Go Home", className="ml-2")),
+                    ],
+                    align="center",
+                    no_gutters=True,
+                ),
+                href="/",
+            )
+        ],
+        color="dark",
+        dark=True,
+    )
+app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
+    navbar,
+    html.H1(
+        children='IMDb TV Series Score',
+        style={
+            'textAlign': 'center',
+            'color': colors['text']
+        }
+    ),
+    
+    html.Div(style={'textAlign': 'center','color': colors['text']}, children=[
+        dcc.RadioItems(
+                id='yaxis',
+                options=[{'label': i, 'value': i} for i in ['Rating', 'Votes']],
+                value='Rating',
+                labelStyle={'display': 'inline-block'}
+            )
+    ]),
+    
+    html.Div([
+        dcc.Graph(id='indicator-graphic')
+    ])
+])  
+@app.callback(
+    Output('indicator-graphic', 'figure'),
+    [Input('yaxis', 'value')])
+def update_graph(yaxis):
+    df["season"] = df["season"].astype(str)
+    lowess = sm.nonparametric.lowess
+    z = lowess(df[yaxis.lower()], df['EpisodeNum'])
+    fig = px.scatter(
+        df,
+        x = 'EpisodeNum',
+        y = yaxis.lower(),
+        color="season", 
+        hover_name = 'title',
+        hover_data = ['episode'],
+        opacity=0.7
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=z[:,0],
+            y=z[:,1],
+            line=dict(color='white', width=8, dash='dash'),
+            showlegend=False,
+            opacity = .4
+            )
+    )
+    fig.update_traces(marker=dict(size=15,
+                                  line=dict(width=2,
+                                            color='DarkSlateGrey')),
+                      selector=dict(mode='markers'))
+    fig.update_layout(
+            title_text=str(df['series'].unique()[0]),
+            xaxis={'title':'Episode Number'},
+            yaxis={'title':'IMDb Rating'},
+            margin={'l': 40, 'b': 40, 't': 10, 'r': 10},
+            legend={'x': 0, 'y': 1},
+            hovermode='closest',
+            plot_bgcolor = colors['background'],
+            paper_bgcolor = colors['background'],
+            font = {
+                'color': colors['text']
+            })
+    fig.update_layout(legend_orientation="h",
+                     legend=dict(x=-.1, y=1.2))
+    fig.update_xaxes(showspikes=True)    
+    return fig
+
+
+def make_data(ids):
     show = imdb.get_movie(ids)
     imdb.update(show, info = ['episodes'])
 
     show_obj = show_series(show)
     show_obj.create_df()
-    show_obj.calc_outliers(sd=std)
 
     df = show_obj.df
-    df['combined_labs'] = df['title'] + "\nS " + df['season'].astype(str) + " | E " + df['episode'].astype(str)
     return df
 
-def make_chart(df):
-    outlier_index = df[df['outlier']==True].index.tolist()
-    plot = (ggplot(df, aes(y='rating', x=df.index.tolist()))
-            + geom_smooth(color='lightblue', size = 2)
-            + geom_point(aes(color = 'factor(season)'), size = 2)
-            + geom_label(aes(x = outlier_index,
-                            y = df[df['outlier']==True]['rating'].values,
-                            label = 'combined_labs'),
-                        data = df[df['outlier']==True], size = 6, show_legend = False, alpha = .7, fill = 'gray',
-                        adjust_text={'expand_points':(1.5, 1.5), 'expand_text':(2, 2), 'arrowprops': {'arrowstyle': '-'}})
-            + labs(x = 'Episode Number', y = 'IMDb Rating', color = "Season")
-            + theme_classic())
-    
-    filename = 'visual' + str(random.randrange(1,10000)) + '.png'
-    plot.save(filename = 'static/' +  filename)
-    title = str(df['series'].unique()[0])
-    return plot, filename, title
 
 class show_series():
     def __init__(self, show):
@@ -114,24 +213,24 @@ class show_series():
         df_dict = {'season':season, 'episode':episode, 'title':title, 'year':year, 'series':series, 'code':code}
         df = pd.DataFrame(df_dict).sort_values(by=['season', 'episode']).reset_index(drop=True)
         df.index += 1
+        df['EpisodeNum'] = df.index
         self.df = self.get_ratings(df)
+    
+    def try_catch_rating(self, x):
+        try:
+            return ratings.loc[x, :].values
+        except:
+            return np.nan
         
     def get_ratings(self, df):
-        df['rating'] = df['code'].apply(lambda x: ratings.loc[x, :].values)
+        df['rating'] = df['code'].apply(lambda x: self.try_catch_rating(x))
+        df.dropna(inplace = True)
         df = df[df['rating'].apply(lambda x: len(x)) > 0]
         df['votes'] = df['rating'].apply(lambda x: x[1])
         df['rating'] = df['rating'].apply(lambda x: x[0])
         return df
-    
-    def calc_outliers(self, column = 'rating', sd = 2):
-        groups = self.df.groupby('season')[column]
-        groups_mean = groups.transform('mean')
-        groups_std = groups.transform('std')
-        self.df['outlier'] = self.df[column].between(groups_mean.sub(groups_std.mul(float(sd))),
-                      groups_mean.add(groups_std.mul(float(sd))))
-        self.df['outlier'] = [ True if x == False else False for x in self.df['outlier'] ]
 
 
         
 if __name__ == '__main__':
-    app.run(use_reloader=False)
+    server.run(use_reloader=False)

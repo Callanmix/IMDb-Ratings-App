@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<script>
+function reply_click(){
+    setTimeout(function(){ 
+        document.getElementById('continue').click(); 
+    }, 2000);
+}
+</script>
+
+
+<body onload="reply_click()">
+    <div class="container">
+        <div class="jumbotron bg-info text-white text-center"> 
+            <h1>Loading Your Graphic</h1><br>
+            <p>If not redirecting click button</p>
+            <form action="/output/" method="post" role="form">
+                <button type="submit" class="btn btn-success" id="continue">This One</button>
+            </form>
+        </div>
+    </div>
+</body>
+    
+{% endblock %}

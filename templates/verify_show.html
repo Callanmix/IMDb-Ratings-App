@@ -1,32 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<script>
-    
-function reply_click(){
-    var x = event.srcElement.name;
-    var std = document.getElementById('sd').value;
-    var y = document.getElementById(x).action;
-    document.getElementById(x).action = y + std + '/';
-}
-</script>
 
 
 <div class="container">
     <div class="jumbotron bg-info text-white text-center"> 
-        <div class="row">
-            <div class="col-md-8">
-                <h3><strong>Results for:</strong></h3>
-                <h1><strong>{{choice}}</strong></h1>
-            </div>
-            <div class="col-md-4">
-                <form action="/fdsaf/" method="post" role="form" name="sd_form" id="sd_form">
-                    <div class="form-group">
-                        <p>Standard Deviation</p><input type="number" value="2.0" name="std" min="1" max="3.5" step="0.1" id="sd" required/> 
-                    </div>
-                </form>
-            </div>
-        </div>
+        <h3><strong>Results for:</strong></h3>
+        <h1><strong>{{choice}}</strong></h1>
     </div>
     <div class="container">
     {% for i in range(0, length) %}
@@ -41,7 +21,7 @@ function reply_click(){
                 </div>
                 <div class="col-md-1">
                     <form action="/load_data/{{ids[i]}}/" method="post" role="form" id="{{ids[i]}}">
-                        <button type="submit" class="btn btn-success" name="{{ids[i]}}" onClick="reply_click()">This One</button>
+                        <button type="submit" class="btn btn-success" name="{{ids[i]}}">This One</button>
                     </form>
                 </div>
             </div>
