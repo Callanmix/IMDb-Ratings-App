@@ -21,9 +21,6 @@ import statsmodels.api as sm
 # Init the flask server
 server = Flask(__name__)
 
-## Assign some global variables (might be a better way to do this)
-global imdb, ratings
-
 # Load the up to date rating information
 baseURL = "https://datasets.imdbws.com/"
 filename = "title.ratings.tsv.gz"
@@ -37,13 +34,11 @@ ratings = ratings.set_index(['tconst'])
 # Init Imdb
 imdb = IMDb()
 
+
 # Final output of Dash App
 @server.route('/output/', methods=['GET', 'POST'])
 def display_output():
-    
-    files = [file for file in os.listdir('static') if file.endswith('.png')]
-    [os.remove('static/'+ filename) for filename in files]
-    
+   
     if request.method == 'POST':    
         return redirect('/dash')
     return render_template('wait_page.html')
@@ -148,7 +143,7 @@ def update_graph(yaxis):
         color="season", 
         hover_name = 'title',
         hover_data = ['episode'],
-        opacity=0.7
+        opacity=0.7,
     )
     fig.add_trace(
         go.Scatter(
@@ -164,13 +159,12 @@ def update_graph(yaxis):
                                             color='DarkSlateGrey')),
                       selector=dict(mode='markers'))
     fig.update_layout(
-            title_text=str(df['series'].unique()[0]),
-            xaxis={'title':'Episode Number'},
+            xaxis={'title':'Episodes Number: ' + str(df['series'].unique()[0])},
             yaxis={'title':'IMDb Rating'},
             margin={'l': 40, 'b': 40, 't': 10, 'r': 10},
             legend={'x': 0, 'y': 1},
             hovermode='closest',
-            plot_bgcolor = colors['background'],
+            #plot_bgcolor = colors['background'],
             paper_bgcolor = colors['background'],
             font = {
                 'color': colors['text']
@@ -182,6 +176,7 @@ def update_graph(yaxis):
 
 
 def make_data(ids):
+    global imdb
     show = imdb.get_movie(ids)
     imdb.update(show, info = ['episodes'])
 
@@ -217,6 +212,7 @@ class show_series():
         self.df = self.get_ratings(df)
     
     def try_catch_rating(self, x):
+        global ratings
         try:
             return ratings.loc[x, :].values
         except:
@@ -233,4 +229,4 @@ class show_series():
 
         
 if __name__ == '__main__':
-    server.run(use_reloader=False)
+    app.run_server(use_reloader=False)
