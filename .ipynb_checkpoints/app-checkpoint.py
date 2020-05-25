@@ -1,11 +1,14 @@
 ## Import all modules
+
 # Flask
 from flask import Flask, request, render_template, redirect, url_for
 from wtforms import Form, validators, TextField
+
 # General
 from imdb import IMDb
 import pandas as pd
 import numpy as np
+
 import requests, os, random, gzip, urllib.request
 # Dash
 import dash
@@ -20,27 +23,37 @@ import statsmodels.api as sm
 
 # Init the flask server
 server = Flask(__name__)
+app = dash.Dash(__name__,
+                external_stylesheets=[dbc.themes.BOOTSTRAP],
+                server=server,
+                routes_pathname_prefix='/dash/')
+app.layout = html.Div([
+    html.Div(id='page-content')
+])
+
+
 
 # Load the up to date rating information
 baseURL = "https://datasets.imdbws.com/"
 filename = "title.ratings.tsv.gz"
-outFilePath = 'files/title.ratings.csv'
+outFilePath = 'static/title.ratings.csv'
 response = urllib.request.urlopen(baseURL + filename)
 with open(outFilePath, 'wb') as outfile:
     outfile.write(gzip.decompress(response.read()))
 # Load the data
-ratings = pd.read_csv('files/title.ratings.csv', delimiter='\t')
+ratings = pd.read_csv('static/title.ratings.csv', delimiter='\t')
 ratings = ratings.set_index(['tconst'])
-# Init Imdb
-imdb = IMDb()
 
 
 # Final output of Dash App
-@server.route('/output/', methods=['GET', 'POST'])
-def display_output():
-   
-    if request.method == 'POST':    
-        return redirect('/dash')
+@server.route('/output/<file>/', methods=['GET', 'POST'])
+def display_output(file):
+    if request.method == 'POST':
+        filename = 'files/'+file+'.csv'
+        data = pd.read_csv(filename)
+        title = str(data['series'].unique()[0])
+        app = dash_app(data, title)
+        return redirect('/dash/')
     return render_template('wait_page.html')
 
 # form for the show entry
@@ -51,7 +64,7 @@ class Show_choices(Form):
 @server.route('/', methods=['GET', 'POST'])
 def index():        
     form = Show_choices(request.form)
-    
+    imdb = IMDb()
     if request.method == 'POST':
         choice = request.form['show']
         results = imdb.search_movie(choice)
@@ -69,10 +82,12 @@ def index():
 def load_data(ids):
     if request.method == 'POST':
         
-        global df
         df = make_data(ids)
+        pathname = str(df['series'].unique()[0])
+        pathname = ''.join(pathname.split())
+        df.to_csv('files/' + pathname + '.csv',index = False)
         
-        return render_template('wait_page.html')
+        return render_template('wait_page.html', pathname = pathname)
     return render_template('verify_show.html')
 
 
@@ -80,105 +95,110 @@ def load_data(ids):
 def page_not_found(e):
     return render_template('python_error.html')
 
+def dash_app(df, title):
+    app.title = title
 
-app = dash.Dash(__name__,
-                external_stylesheets=[dbc.themes.BOOTSTRAP],
-                server=server,
-                routes_pathname_prefix='/dash/')
-colors = {
-    'background': '#111111',
-    'text': '#7FDBFF'
-}
-navbar = dbc.Navbar(
-        [
-            html.A(
-                # Use row and col to control vertical alignment of logo / brand
-                dbc.Row(
-                    [
-                        dbc.Col(dbc.NavbarBrand("Go Home", className="ml-2")),
-                    ],
-                    align="center",
-                    no_gutters=True,
-                ),
-                href="/",
-            )
-        ],
-        color="dark",
-        dark=True,
-    )
-app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
-    navbar,
-    html.H1(
-        children='IMDb TV Series Score',
-        style={
-            'textAlign': 'center',
-            'color': colors['text']
-        }
-    ),
-    
-    html.Div(style={'textAlign': 'center','color': colors['text']}, children=[
-        dcc.RadioItems(
-                id='yaxis',
-                options=[{'label': i, 'value': i} for i in ['Rating', 'Votes']],
-                value='Rating',
-                labelStyle={'display': 'inline-block'}
-            )
-    ]),
-    
-    html.Div([
-        dcc.Graph(id='indicator-graphic')
-    ])
-])  
-@app.callback(
-    Output('indicator-graphic', 'figure'),
-    [Input('yaxis', 'value')])
-def update_graph(yaxis):
-    df["season"] = df["season"].astype(str)
-    lowess = sm.nonparametric.lowess
-    z = lowess(df[yaxis.lower()], df['EpisodeNum'])
-    print(str(df['series'].unique()[0]))
-    fig = px.scatter(
-        df,
-        x = 'EpisodeNum',
-        y = yaxis.lower(),
-        color="season", 
-        hover_name = 'title',
-        hover_data = ['episode'],
-        opacity=0.7,
-        title = 'Test'
-    )
-    fig.add_trace(
-        go.Scatter(
-            x=z[:,0],
-            y=z[:,1],
-            line=dict(color='white', width=8, dash='dash'),
-            showlegend=False,
-            opacity = .4
-            )
-    )
-    fig.update_traces(marker=dict(size=15,
-                                  line=dict(width=2,
-                                            color='DarkSlateGrey')),
-                      selector=dict(mode='markers'))
-    fig.update_layout(
-            xaxis={'title':'Episode Number'},
-            yaxis={'title':'IMDb Rating'},
-            margin={'l': 40, 'b': 40, 't': 10, 'r': 10},
-            legend={'x': 0, 'y': 1},
-            hovermode='closest',
-            #plot_bgcolor = colors['background'],
-            paper_bgcolor = colors['background'],
-            font = {
+    colors = {
+        'background': '#111111',
+        'text': '#7FDBFF'
+    }
+
+    navbar = dbc.Navbar(
+            [
+                html.A(
+                    # Use row and col to control vertical alignment of logo / brand
+                    dbc.Row(
+                        [
+                            dbc.Col(dbc.NavbarBrand("Go Home", className="ml-2")),
+                        ],
+                        align="center",
+                        no_gutters=True,
+                    ),
+                    href="/",
+                )
+            ],
+            color="dark",
+            dark=True,
+        )
+    app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
+        navbar,
+        html.H1(
+            children='IMDb TV Series Score',
+            style={
+                'textAlign': 'center',
                 'color': colors['text']
-            })
-    fig.update_layout(legend_orientation="h",
-                     legend=dict(x=-.1, y=1.2))
-    fig.update_xaxes(showspikes=True)    
-    return fig
+            }
+        ),
+        html.H4(
+            children=title,
+            style={
+                'textAlign': 'center',
+                'color': colors['text']
+            }
+        ),
+        html.Div(style={'textAlign': 'center','color': colors['text']}, children=[
+            dcc.RadioItems(
+                    id='yaxis',
+                    options=[{'label': i, 'value': i} for i in ['Rating', 'Votes']],
+                    value='Rating',
+                    labelStyle={'display': 'inline-block'}
+                )
+        ]),
+
+        html.Div([
+            dcc.Graph(id='indicator-graphic')
+        ])
+    ])  
+    @app.callback(
+        Output('indicator-graphic', 'figure'),
+        [Input('yaxis', 'value')])
+    def update_graph(yaxis):
+        df["season"] = df["season"].astype(str)
+        lowess = sm.nonparametric.lowess
+        z = lowess(df[yaxis.lower()], df['EpisodeNum'])
+        fig = px.scatter(
+            df,
+            x = 'EpisodeNum',
+            y = yaxis.lower(),
+            color="season", 
+            hover_name = 'title',
+            hover_data = ['episode'],
+            opacity=0.7,
+        )
+        fig.add_trace(
+            go.Scatter(
+                x=z[:,0],
+                y=z[:,1],
+                line=dict(color='black', width=8, dash='dash'),
+                showlegend=False,
+                opacity = .4
+                )
+        )
+        fig.update_traces(marker=dict(size=15,
+                                      line=dict(width=2,
+                                                color='DarkSlateGrey')),
+                          selector=dict(mode='markers'))
+        fig.update_layout(
+                xaxis={'title':str(df['series'].unique()[0])},
+                yaxis={'title':'IMDb Rating'},
+                margin={'l': 40, 'b': 40, 't': 10, 'r': 10},
+                legend={'x': 0, 'y': 1},
+                hovermode='closest',
+                #plot_bgcolor = colors['background'],
+                paper_bgcolor = colors['background'],
+                font = {
+                    'color': colors['text']
+                })
+        fig.update_layout(legend_orientation="h",
+                         legend=dict(x=-.1, y=1.2))
+        fig.update_xaxes(showspikes=True)    
+        return fig
+    return app
 
 
 def make_data(ids):
-    global imdb
+    # Init Imdb
+    imdb = IMDb()
     show = imdb.get_movie(ids)
     imdb.update(show, info = ['episodes'])
 
@@ -194,6 +214,7 @@ class show_series():
         self.show = show
 
     def create_df(self):
+        imdb = IMDb()
         season, episode, title, year, series, code = [], [], [], [], [], []
         for x in self.show['episodes'].keys():
             for y in self.show['episodes'][x].keys():
@@ -231,4 +252,4 @@ class show_series():
 
         
 if __name__ == '__main__':
-    server.run(use_reloader=False)
+    app.run_server(threaded=True)
