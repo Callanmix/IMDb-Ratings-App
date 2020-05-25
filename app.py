@@ -51,8 +51,7 @@ def display_output(file):
     if request.method == 'POST':
         filename = 'tmp/'+file+'.csv'
         data = pd.read_csv(filename)
-        title = str(data['series'].unique()[0])
-        app = dash_app(data, title)
+        app = dash_app(data)
         return redirect('/dash/')
     return render_template('wait_page.html')
 
@@ -95,7 +94,8 @@ def load_data(ids):
 def page_not_found(e):
     return render_template('python_error.html')
 
-def dash_app(df, title):
+def dash_app(df):
+    title = str(df['series'].unique()[0])
     app.title = title
 
     colors = {
@@ -130,7 +130,7 @@ def dash_app(df, title):
             }
         ),
         html.H4(
-            children=title,
+            children= title,
             style={
                 'textAlign': 'center',
                 'color': colors['text']
