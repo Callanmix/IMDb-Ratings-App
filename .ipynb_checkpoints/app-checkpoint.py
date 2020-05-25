@@ -49,7 +49,7 @@ ratings = ratings.set_index(['tconst'])
 @server.route('/output/<file>/', methods=['GET', 'POST'])
 def display_output(file):
     if request.method == 'POST':
-        filename = 'files/'+file+'.csv'
+        filename = 'tmp/'+file+'.csv'
         data = pd.read_csv(filename)
         title = str(data['series'].unique()[0])
         app = dash_app(data, title)
@@ -85,7 +85,7 @@ def load_data(ids):
         df = make_data(ids)
         pathname = str(df['series'].unique()[0])
         pathname = ''.join(pathname.split())
-        df.to_csv('files/' + pathname + '.csv',index = False)
+        df.to_csv('tmp/' + pathname + '.csv',index = False)
         
         return render_template('wait_page.html', pathname = pathname)
     return render_template('verify_show.html')
