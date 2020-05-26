@@ -24,7 +24,11 @@ import statsmodels.api as sm
 
 # Init the flask server
 server = Flask(__name__)
-
+app = dash.Dash(__name__,
+                external_stylesheets=[dbc.themes.BOOTSTRAP],
+                server=server,
+                routes_pathname_prefix='/dash/')
+app.layout = html.Div()
 
 # Load the up to date rating information
 baseURL = "https://datasets.imdbws.com/"
@@ -253,4 +257,4 @@ class show_series():
 
         
 if __name__ == '__main__':
-    server.run(threaded=True, use_reloader = False)
+    app.run_server(threaded=True, use_reloader = False)
