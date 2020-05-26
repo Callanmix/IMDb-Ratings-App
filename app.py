@@ -8,6 +8,7 @@ from wtforms import Form, validators, TextField
 from imdb import IMDb
 import pandas as pd
 import numpy as np
+import time
 
 import requests, os, random, gzip, urllib.request
 # Dash
@@ -45,9 +46,10 @@ def display_output(file):
         filename = 'tmp/'+file+'.csv'
         data = pd.read_csv(filename)
         title = str(data['series'].unique()[0])
+        pathname = ''.join(title.split()) + str(time.time())
         serve = server
-        dash_app(data, title, serve)
-        return redirect('/visual/' + title + '/')
+        dash_app(data, title, serve, pathname)
+        return redirect('/visual/' + pathname + '/')
     return render_template('wait_page.html')
 
 # form for the show entry
@@ -89,11 +91,11 @@ def load_data(ids):
 def page_not_found(e):
     return render_template('python_error.html')
 
-def dash_app(df, title, serve):
+def dash_app(df, title, serve, pathname):
     app = dash.Dash(__name__,
                 external_stylesheets=[dbc.themes.BOOTSTRAP],
                 server=serve,
-                routes_pathname_prefix='/visual/' + title + '/')
+                routes_pathname_prefix='/visual/' + pathname + '/')
     
     app.title = title
 
