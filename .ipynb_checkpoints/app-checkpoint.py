@@ -23,14 +23,6 @@ import statsmodels.api as sm
 
 # Init the flask server
 server = Flask(__name__)
-app = dash.Dash(__name__,
-                external_stylesheets=[dbc.themes.BOOTSTRAP],
-                server=server,
-                routes_pathname_prefix='/dash/')
-app.layout = html.Div([
-    html.Div(id='page-content')
-])
-
 
 
 # Load the up to date rating information
@@ -48,11 +40,14 @@ ratings = ratings.set_index(['tconst'])
 # Final output of Dash App
 @server.route('/output/<file>/', methods=['GET', 'POST'])
 def display_output(file):
+    app = {}
     if request.method == 'POST':
         filename = 'tmp/'+file+'.csv'
         data = pd.read_csv(filename)
-        app = dash_app(data)
-        return redirect('/dash/')
+        title = str(data['series'].unique()[0])
+        serve = server
+        dash_app(data, title, serve)
+        return redirect('/visual/' + title + '/')
     return render_template('wait_page.html')
 
 # form for the show entry
@@ -94,8 +89,12 @@ def load_data(ids):
 def page_not_found(e):
     return render_template('python_error.html')
 
-def dash_app(df):
-    title = str(df['series'].unique()[0])
+def dash_app(df, title, serve):
+    app = dash.Dash(__name__,
+                external_stylesheets=[dbc.themes.BOOTSTRAP],
+                server=serve,
+                routes_pathname_prefix='/visual/' + title + '/')
+    
     app.title = title
 
     colors = {
@@ -130,7 +129,7 @@ def dash_app(df):
             }
         ),
         html.H4(
-            children= title,
+            children=title,
             style={
                 'textAlign': 'center',
                 'color': colors['text']
@@ -252,4 +251,4 @@ class show_series():
 
         
 if __name__ == '__main__':
-    app.run_server(threaded=True)
+    server.run(threaded=True, use_reloader = False)
