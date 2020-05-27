@@ -28,7 +28,7 @@ app = dash.Dash(__name__,
                 external_stylesheets=[dbc.themes.BOOTSTRAP],
                 server=server,
                 routes_pathname_prefix='/dash/')
-app.layout = html.Div()
+app.layout = html.Div("My Dash app")
 
 # Load the up to date rating information
 baseURL = "https://datasets.imdbws.com/"
