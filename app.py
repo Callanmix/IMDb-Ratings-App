@@ -101,6 +101,9 @@ def dash_app(df, title, serve, pathname):
                 server=serve,
                 routes_pathname_prefix='/visual/' + pathname + '/')
     
+    app.scripts.config.serve_locally = True
+    app.css.config.serve_locally = True
+    
     app.title = title
 
     colors = {
