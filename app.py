@@ -27,7 +27,7 @@ server = Flask(__name__)
 app = dash.Dash(__name__,
                 external_stylesheets=[dbc.themes.BOOTSTRAP],
                 server=server,
-                routes_pathname_prefix='/dash/')
+                routes_pathname_prefix="/heads/")
 app.layout = html.Div("My Dash app")
 
 # Load the up to date rating information
@@ -99,8 +99,11 @@ def dash_app(df, title, serve, pathname):
     app = dash.Dash(__name__,
                 external_stylesheets=[dbc.themes.BOOTSTRAP],
                 server=serve,
+                requests_pathname_prefix = '/visual/' + pathname + '/',
                 routes_pathname_prefix='/visual/' + pathname + '/')
     
+    app.url_base_pathname = '/visual/' + pathname + '/'
+    app.routes_pathname_prefix = app.url_base_pathname
     app.scripts.config.serve_locally = True
     app.css.config.serve_locally = True
     
