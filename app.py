@@ -24,11 +24,6 @@ import statsmodels.api as sm
 
 # Init the flask server
 server = Flask(__name__)
-app = dash.Dash(__name__,
-                external_stylesheets=[dbc.themes.BOOTSTRAP],
-                server=server,
-                routes_pathname_prefix="/dash/")
-app.layout = html.Div("My Dash app")
 
 # Load the up to date rating information
 baseURL = "https://datasets.imdbws.com/"
@@ -52,8 +47,8 @@ def display_output(file):
         title = str(data['series'].unique()[0])
         pathname = ''.join(title.split()) + str(time.time())
         serve = server
-        app = dash_app(data, title, serve, pathname)
-        return redirect('/visual/' + pathname + '/')
+        dash_app(data, title, serve, pathname)
+        return redirect('/' + pathname + '/')
     return render_template('wait_page.html')
 
 # form for the show entry
@@ -99,7 +94,7 @@ def dash_app(df, title, serve, pathname):
     app = dash.Dash(__name__,
                 external_stylesheets=[dbc.themes.BOOTSTRAP],
                 server=serve,
-                routes_pathname_prefix='/visual/' + pathname + '/')
+                routes_pathname_prefix='/' + pathname + '/')
     
     
     app.title = title
@@ -258,4 +253,4 @@ class show_series():
 
         
 if __name__ == '__main__':
-    app.run_server(threaded=True, use_reloader = False)
+    server.run(use_reloader = False)
