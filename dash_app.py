@@ -68,6 +68,14 @@ def dash_app(df, title, server, pathname):
 
         html.Div([
             dcc.Graph(id='indicator-graphic')
+        ]),
+        
+        html.Div([
+            dbc.Table.from_dataframe(df[['season', 'episode', 'title', 'rating', 'votes']], bordered=True,
+                                     dark=True,
+                                     hover=True,
+                                     responsive=True,
+                                     striped=True)
         ])
     ])  
     @app.callback(
