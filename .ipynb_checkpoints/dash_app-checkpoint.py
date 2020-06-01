@@ -11,7 +11,6 @@ import statsmodels.api as sm
 
 def dash_app(df, title, server, pathname):
     app = dash.Dash(__name__,
-                external_stylesheets=[dbc.themes.BOOTSTRAP],
                 server=server,
                 routes_pathname_prefix='/' + pathname + '/')
     
