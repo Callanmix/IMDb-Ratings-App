@@ -15,7 +15,8 @@ def dash_app(df, title, server, pathname):
                 server=server,
                 routes_pathname_prefix='/' + pathname + '/')
     
-    
+    app.url_base_pathname = '/' + pathname + '/'
+    app.routes_pathname_prefix = app.url_base_pathname
     app.title = title
 
     colors = {
