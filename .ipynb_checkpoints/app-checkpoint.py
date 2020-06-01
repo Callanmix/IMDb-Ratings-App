@@ -11,15 +11,6 @@ import numpy as np
 import time
 
 import requests, os, random, gzip, urllib.request
-# Dash
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
-import dash_bootstrap_components as dbc
-from dash.dependencies import Input, Output
-import plotly_express as px
-import plotly.graph_objects as go
-import statsmodels.api as sm
 
 
 # Init the flask server
@@ -46,8 +37,10 @@ def display_output(file):
         data = pd.read_csv(filename)
         title = str(data['series'].unique()[0])
         pathname = ''.join(title.split()) + str(time.time())
-        serve = server
-        dash_app(data, title, serve, pathname)
+        
+        from dash_app import dash_app
+        dash_app(data, title, server, pathname)
+        
         return redirect('/' + pathname + '/')
     return render_template('wait_page.html')
 
@@ -89,112 +82,6 @@ def load_data(ids):
 @server.errorhandler(500)
 def page_not_found(e):
     return render_template('python_error.html')
-
-def dash_app(df, title, serve, pathname):
-    app = dash.Dash(__name__,
-                external_stylesheets=[dbc.themes.BOOTSTRAP],
-                server=serve,
-                routes_pathname_prefix='/' + pathname + '/')
-    
-    
-    app.title = title
-
-    colors = {
-        'background': '#111111',
-        'text': '#7FDBFF'
-    }
-
-    navbar = dbc.Navbar(
-            [
-                html.A(
-                    # Use row and col to control vertical alignment of logo / brand
-                    dbc.Row(
-                        [
-                            dbc.Col(dbc.NavbarBrand("Go Home", className="ml-2")),
-                        ],
-                        align="center",
-                        no_gutters=True,
-                    ),
-                    href="/",
-                )
-            ],
-            color="dark",
-            dark=True,
-        )
-    app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
-        navbar,
-        html.H1(
-            children='IMDb TV Series Score',
-            style={
-                'textAlign': 'center',
-                'color': colors['text']
-            }
-        ),
-        html.H4(
-            children=title,
-            style={
-                'textAlign': 'center',
-                'color': colors['text']
-            }
-        ),
-        html.Div(style={'textAlign': 'center','color': colors['text']}, children=[
-            dcc.RadioItems(
-                    id='yaxis',
-                    options=[{'label': i, 'value': i} for i in ['Rating', 'Votes']],
-                    value='Rating',
-                    labelStyle={'display': 'inline-block'}
-                )
-        ]),
-
-        html.Div([
-            dcc.Graph(id='indicator-graphic')
-        ])
-    ])  
-    @app.callback(
-        Output('indicator-graphic', 'figure'),
-        [Input('yaxis', 'value')])
-    def update_graph(yaxis):
-        df["season"] = df["season"].astype(str)
-        lowess = sm.nonparametric.lowess
-        z = lowess(df[yaxis.lower()], df['EpisodeNum'])
-        fig = px.scatter(
-            df,
-            x = 'EpisodeNum',
-            y = yaxis.lower(),
-            color="season", 
-            hover_name = 'title',
-            hover_data = ['episode'],
-            opacity=0.7,
-        )
-        fig.add_trace(
-            go.Scatter(
-                x=z[:,0],
-                y=z[:,1],
-                line=dict(color='black', width=8, dash='dash'),
-                showlegend=False,
-                opacity = .4
-                )
-        )
-        fig.update_traces(marker=dict(size=15,
-                                      line=dict(width=2,
-                                                color='DarkSlateGrey')),
-                          selector=dict(mode='markers'))
-        fig.update_layout(
-                xaxis={'title':str(df['series'].unique()[0])},
-                yaxis={'title':'IMDb Rating'},
-                margin={'l': 40, 'b': 40, 't': 10, 'r': 10},
-                legend={'x': 0, 'y': 1},
-                hovermode='closest',
-                #plot_bgcolor = colors['background'],
-                paper_bgcolor = colors['background'],
-                font = {
-                    'color': colors['text']
-                })
-        fig.update_layout(legend_orientation="h",
-                         legend=dict(x=-.1, y=1.2))
-        fig.update_xaxes(showspikes=True)    
-        return fig
-    return app
 
 
 def make_data(ids):
