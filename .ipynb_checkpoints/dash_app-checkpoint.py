@@ -11,8 +11,8 @@ import statsmodels.api as sm
 
 def dash_app(df, title, server, pathname):
     app = dash.Dash(__name__,
-                server=server,
-                routes_pathname_prefix='/' + pathname + '/')
+                external_stylesheets=[dbc.themes.BOOTSTRAP],
+                server=server)
     
     app.url_base_pathname = '/' + pathname + '/'
     app.routes_pathname_prefix = app.url_base_pathname
@@ -29,7 +29,7 @@ def dash_app(df, title, server, pathname):
                     # Use row and col to control vertical alignment of logo / brand
                     dbc.Row(
                         [
-                            dbc.Col(dbc.NavbarBrand("Go Home", className="ml-2")),
+                            dbc.Col(dbc.NavbarBrand("Start Over", className="ml-2")),
                         ],
                         align="center",
                         no_gutters=True,
@@ -40,6 +40,7 @@ def dash_app(df, title, server, pathname):
             color="dark",
             dark=True,
         )
+    
     app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
         navbar,
         html.H1(
@@ -68,6 +69,10 @@ def dash_app(df, title, server, pathname):
         html.Div([
             dcc.Graph(id='indicator-graphic')
         ]),
+        
+        html.Div([html.Br()]),
+        html.Div([html.Br()]),
+        html.Div([html.Br()]),
         
         html.Div([
             dbc.Table.from_dataframe(df[['season', 'episode', 'title', 'rating', 'votes']], bordered=True,
@@ -119,6 +124,9 @@ def dash_app(df, title, server, pathname):
                 })
         fig.update_layout(legend_orientation="h",
                          legend=dict(x=-.1, y=1.2))
-        fig.update_xaxes(showspikes=True)    
+        fig.update_xaxes(showspikes=True)   
+        fig.write_html("tmp/test.html")
+        
         return fig
+    
     return app
