@@ -52,10 +52,10 @@ def display_output(file):
     if request.method == 'POST':
         filename = 'tmp/'+file+'.csv'
         data = pd.read_csv(filename)
-        
+        name = " ".join(file.split('_'))
         filename = update_graph(data)
 
-        return render_template('output.html', file = '/static/' + filename + '.html')
+        return render_template('output.html', file = '/static/' + filename + '.html', name = name)
     return render_template('wait_page.html')
 
 # form for the show entry
@@ -86,11 +86,19 @@ def load_data(ids):
         
         df = make_data(ids)
         pathname = str(df['series'].unique()[0])
-        pathname = ''.join(pathname.split())
+        pathname = '_'.join(pathname.split())
         df.to_csv('tmp/' + pathname + '.csv',index = False)
         
         return render_template('wait_page.html', pathname = pathname)
     return render_template('verify_show.html')
+
+@server.route('/about/', methods=['GET', 'POST'])
+def get_about():
+    if request.method == 'POST':
+        return render_template('about.html')
+    if request.method == 'GET':
+        return render_template('about.html')
+    return render_template('index.html')
 
 
 @server.errorhandler(500)
@@ -163,7 +171,7 @@ def update_graph(df):
         color="season", 
         hover_name = 'title',
         hover_data = ['episode'],
-        opacity=0.7,
+        opacity=0.7
     )
     fig.add_trace(
         go.Scatter(
@@ -178,15 +186,23 @@ def update_graph(df):
                                   line=dict(width=2,
                                             color='DarkSlateGrey')),
                       selector=dict(mode='markers'))
+    
     fig.update_layout(
-            xaxis={'title':str(df['series'].unique()[0])},
-            yaxis={'title':'IMDb Rating'},
-            margin={'l': 40, 'b': 40, 't': 10, 'r': 10},
-            legend={'x': 0, 'y': 1},
-            hovermode='closest')
-    fig.update_layout(legend_orientation="h",
-                     legend=dict(x=-.1, y=1.2))
+        xaxis={'title':'Episode Number'},
+        yaxis={'title':'IMDb Rating'},
+        margin={'l': 10, 'b': 10, 't': 20, 'r': 10},
+        legend={'x': 0, 'y': 1},
+        hovermode='closest',
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        legend_orientation="h",
+        xaxis_showgrid=False, 
+        yaxis_showgrid=False
+    )
+    
     fig.update_xaxes(showspikes=True)   
+    fig.update(layout=dict(title=dict(x=0.5)))
+    
     filename = '_'.join(str(df['series'].unique()[0]).split())
     fig.write_html("static/"+ filename +".html")
     return filename

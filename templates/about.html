@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    a {
+        color: darkkhaki
+    }
+    i {
+        color: aquamarine
+    }
+    .tooltip {
+      position: relative;
+      display: inline-block;
+    }
+
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 140px;
+      background-color: #555;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      bottom: 150%;
+      left: 50%;
+      margin-left: -75px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .tooltip .tooltiptext::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: #555 transparent transparent transparent;
+    }
+
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+</style>
+
+<script>
+function myFunction() {
+    var copyText = document.getElementById("email");
+    var textArea = document.createElement("textarea");
+    textArea.value = copyText.textContent;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("Copy");
+    textArea.remove();
+  
+    var tooltip = document.getElementById("myTooltip");
+    tooltip.innerHTML = "Copied";
+}
+
+function outFunc() {
+    var tooltip = document.getElementById("myTooltip");
+    tooltip.innerHTML = "Copy to clipboard";
+}
+</script>
+
+<link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+<!-- Font Awesome icons (free version)-->
+<script src="https://use.fontawesome.com/releases/v5.13.0/js/all.js" crossorigin="anonymous"></script>
+<!-- Google fonts-->
+<link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+
+<div class="container">
+    <div class="jumbotron bg-info text-white"> 
+        <p style="text-align: center">
+            This is a project made by Callan Mix. It is a python flask app built with html and java templates. The purpose is to visualize a T.V. series ratings over the course of it's life. The ratings are from <a href="https://www.imdb.com/" target="_blank" rel="noopener noreferrer">IMDb</a>. Just type in the name of the show, select the right one, and you're done. 
+        </p>  
+    </div>
+</div>
+
+<!-- Masthead-->
+        <header class="masthead">
+            <div class="container d-flex h-100 align-items-center">
+                <div class="mx-auto text-center">
+                    <!-- Contact-->
+                    <section class="contact-section">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-4 mb-3 mb-md-0">
+                                    <div class="card py-4 h-100">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-map-marked-alt text-primary mb-2"></i>
+                                            <h4 class="text-uppercase m-0">Address</h4>
+                                            <hr class="my-4" />
+                                            <div class="small text-black-50">Attending School in Rexburg, Idaho</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3 mb-md-0">
+                                    <div class="card py-4 h-100">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-envelope text-primary mb-2"></i>
+                                            <h4 class="text-uppercase m-0">Email</h4>
+                                            <hr class="my-4" />
+                                            <div class="small text-black-50">
+                                                <div class="tooltip">
+                                                    <a onclick="myFunction()" onmouseout="outFunc()">
+                                                        <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+                                                        <p id="email">callanmix@gmail.com</p>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3 mb-md-0">
+                                    <div class="card py-4 h-100">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-mobile-alt text-primary mb-2"></i>
+                                            <h4 class="text-uppercase m-0">Phone</h4>
+                                            <hr class="my-4" />
+                                            <div class="small text-black-50">+1 (208) 227-4978</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <br><br><br>
+                    <div class="social d-flex justify-content-center" style="font-size: 2.rem";>
+                        <a class="mx-2" href="https://www.linkedin.com/in/callan-mix/" target="_blank">
+                            <i class="fab fa-linkedin-in fa-5x" style="color: darkkhaki"></i>
+                        </a>
+                        <a class="mx-2" href="https://github.com/Callanmix" target="_blank">
+                            <i class="fab fa-github fa-5x" style="color: darkkhaki"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+{% endblock %}
+    

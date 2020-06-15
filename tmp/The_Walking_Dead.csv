@@ -1,0 +1,147 @@
+season,episode,title,year,series,code,EpisodeNum,rating,votes
+1,1,Days Gone Bye,2010,The Walking Dead,tt1589921,1,9.2,19749.0
+1,2,Guts,2010,The Walking Dead,tt1628064,2,8.7,12408.0
+1,3,Tell It to the Frogs,2010,The Walking Dead,tt1628065,3,8.3,11338.0
+1,4,Vatos,2010,The Walking Dead,tt1628066,4,8.6,11090.0
+1,5,Wildfire,2010,The Walking Dead,tt1628067,5,8.3,10634.0
+1,6,TS-19,2010,The Walking Dead,tt1628068,6,8.7,11646.0
+2,1,What Lies Ahead,2011,The Walking Dead,tt1790548,7,8.6,10599.0
+2,2,Bloodletting,2011,The Walking Dead,tt1804266,8,8.0,9546.0
+2,3,Save the Last One,2011,The Walking Dead,tt1804267,9,8.4,9545.0
+2,4,Cherokee Rose,2011,The Walking Dead,tt1804268,10,7.6,9273.0
+2,5,Chupacabra,2011,The Walking Dead,tt1804269,11,8.1,9354.0
+2,6,Secrets,2011,The Walking Dead,tt1804270,12,7.7,9061.0
+2,7,Pretty Much Dead Already,2011,The Walking Dead,tt1804271,13,9.3,13373.0
+2,8,Nebraska,2012,The Walking Dead,tt1804272,14,8.3,9134.0
+2,9,Triggerfinger,2012,The Walking Dead,tt1804273,15,8.3,8865.0
+2,10,18 Miles Out,2012,The Walking Dead,tt1804262,16,8.5,9179.0
+2,11,"Judge, Jury, Executioner",2012,The Walking Dead,tt1804263,17,8.6,9323.0
+2,12,Better Angels,2012,The Walking Dead,tt1804264,18,9.1,11082.0
+2,13,Beside the Dying Fire,2012,The Walking Dead,tt1804265,19,9.2,12619.0
+3,1,Seed,2012,The Walking Dead,tt2107527,20,8.9,11418.0
+3,2,Sick,2012,The Walking Dead,tt2253598,21,8.6,9317.0
+3,3,Walk with Me,2012,The Walking Dead,tt2253600,22,8.2,8971.0
+3,4,Killer Within,2012,The Walking Dead,tt2253602,23,9.3,12499.0
+3,5,Say the Word,2012,The Walking Dead,tt2253610,24,8.2,8349.0
+3,6,Hounded,2012,The Walking Dead,tt2253604,25,8.3,8216.0
+3,7,When the Dead Come Knocking,2012,The Walking Dead,tt2253606,26,8.6,8437.0
+3,8,Made to Suffer,2012,The Walking Dead,tt2253608,27,9.0,9492.0
+3,9,The Suicide King,2013,The Walking Dead,tt2269550,28,8.2,8515.0
+3,10,Home,2013,The Walking Dead,tt2401094,29,8.7,9175.0
+3,11,I Ain't a Judas,2013,The Walking Dead,tt2521154,30,7.8,8302.0
+3,12,Clear,2013,The Walking Dead,tt2521158,31,8.8,9929.0
+3,13,Arrow on the Doorpost,2013,The Walking Dead,tt2521162,32,7.8,8549.0
+3,14,Prey,2013,The Walking Dead,tt2521168,33,8.0,8527.0
+3,15,This Sorrowful Life,2013,The Walking Dead,tt2521172,34,8.9,9738.0
+3,16,Welcome to the Tombs,2013,The Walking Dead,tt2521182,35,8.2,10052.0
+4,1,30 Days Without an Accident,2013,The Walking Dead,tt2795750,36,8.2,10566.0
+4,2,Infected,2013,The Walking Dead,tt2931446,37,8.4,8984.0
+4,3,Isolation,2013,The Walking Dead,tt2948632,38,8.1,8393.0
+4,4,Indifference,2013,The Walking Dead,tt2948628,39,8.0,8411.0
+4,5,Internment,2013,The Walking Dead,tt2948636,40,8.9,10263.0
+4,6,Live Bait,2013,The Walking Dead,tt2948630,41,7.8,8848.0
+4,7,Dead Weight,2013,The Walking Dead,tt2948634,42,7.8,8600.0
+4,8,Too Far Gone,2013,The Walking Dead,tt2948638,43,9.7,21656.0
+4,9,After,2014,The Walking Dead,tt3316798,44,8.1,9482.0
+4,10,Inmates,2014,The Walking Dead,tt3260594,45,8.2,8621.0
+4,11,Claimed,2014,The Walking Dead,tt3316794,46,8.3,8372.0
+4,12,Still,2014,The Walking Dead,tt3259044,47,7.3,11490.0
+4,13,Alone,2014,The Walking Dead,tt3316796,48,8.0,8680.0
+4,14,The Grove,2014,The Walking Dead,tt3316800,49,9.2,13523.0
+4,15,Us,2014,The Walking Dead,tt3260610,50,8.5,8441.0
+4,16,A,2014,The Walking Dead,tt3260612,51,9.2,13037.0
+5,1,No Sanctuary,2014,The Walking Dead,tt3297776,52,9.6,23253.0
+5,2,Strangers,2014,The Walking Dead,tt3646000,53,8.6,10342.0
+5,3,Four Walls and a Roof,2014,The Walking Dead,tt3689244,54,9.0,11554.0
+5,4,Slabtown,2014,The Walking Dead,tt3712494,55,7.5,10179.0
+5,5,Self Help,2014,The Walking Dead,tt3714480,56,8.0,9018.0
+5,6,Consumed,2014,The Walking Dead,tt3714484,57,8.1,8803.0
+5,7,Crossed,2014,The Walking Dead,tt3714490,58,8.0,8256.0
+5,8,Coda,2014,The Walking Dead,tt3714498,59,8.8,11305.0
+5,9,What Happened and What's Going On,2015,The Walking Dead,tt3853912,60,8.0,10803.0
+5,10,Them,2015,The Walking Dead,tt3853914,61,7.6,9112.0
+5,11,The Distance,2015,The Walking Dead,tt3853916,62,8.5,8616.0
+5,12,Remember,2015,The Walking Dead,tt3853920,63,8.7,8924.0
+5,13,Forget,2015,The Walking Dead,tt3853922,64,8.0,7988.0
+5,14,Spend,2015,The Walking Dead,tt3853924,65,9.0,10094.0
+5,15,Try,2015,The Walking Dead,tt3853926,66,8.5,8454.0
+5,16,Conquer,2015,The Walking Dead,tt3853928,67,9.3,13733.0
+6,1,First Time Again,2015,The Walking Dead,tt4211958,68,8.7,13072.0
+6,2,JSS,2015,The Walking Dead,tt4452400,69,9.3,13041.0
+6,3,Thank You,2015,The Walking Dead,tt4719614,70,9.3,13942.0
+6,4,Here's Not Here,2015,The Walking Dead,tt4719620,71,8.2,11682.0
+6,5,Now,2015,The Walking Dead,tt4719650,72,7.3,8805.0
+6,6,Always Accountable,2015,The Walking Dead,tt4719674,73,7.7,8266.0
+6,7,Heads Up,2015,The Walking Dead,tt4323856,74,8.1,8192.0
+6,8,Start to Finish,2015,The Walking Dead,tt4589566,75,8.1,8914.0
+6,9,No Way Out,2016,The Walking Dead,tt4575388,76,9.6,23958.0
+6,10,The Next World,2016,The Walking Dead,tt4776068,77,8.4,9071.0
+6,11,Knots Untie,2016,The Walking Dead,tt4776070,78,8.2,7791.0
+6,12,Not Tomorrow Yet,2016,The Walking Dead,tt4776072,79,9.0,9972.0
+6,13,The Same Boat,2016,The Walking Dead,tt4776078,80,8.7,9190.0
+6,14,Twice as Far,2016,The Walking Dead,tt4776082,81,8.1,7920.0
+6,15,East,2016,The Walking Dead,tt4776088,82,8.0,7913.0
+6,16,Last Day on Earth,2016,The Walking Dead,tt4589574,83,6.5,26594.0
+7,1,The Day Will Come When You Won't Be,2016,The Walking Dead,tt5164772,84,9.1,35289.0
+7,2,The Well,2016,The Walking Dead,tt5207722,85,7.2,11360.0
+7,3,The Cell,2016,The Walking Dead,tt5207726,86,7.6,9893.0
+7,4,Service,2016,The Walking Dead,tt5207730,87,7.6,9599.0
+7,5,Go Getters,2016,The Walking Dead,tt5207732,88,6.8,8970.0
+7,6,Swear,2016,The Walking Dead,tt5207734,89,5.6,11736.0
+7,7,Sing Me a Song,2016,The Walking Dead,tt5207738,90,8.0,8933.0
+7,8,Hearts Still Beating,2016,The Walking Dead,tt5207740,91,8.7,10548.0
+7,9,Rock in the Road,2017,The Walking Dead,tt5207746,92,8.1,8138.0
+7,10,New Best Friends,2017,The Walking Dead,tt5207750,93,7.3,7480.0
+7,11,Hostiles and Calamities,2017,The Walking Dead,tt5207754,94,7.3,7436.0
+7,12,Say Yes,2017,The Walking Dead,tt5207756,95,7.0,7624.0
+7,13,Bury Me Here,2017,The Walking Dead,tt5207758,96,7.6,7452.0
+7,14,The Other Side,2017,The Walking Dead,tt5207764,97,6.6,7235.0
+7,15,Something They Need,2017,The Walking Dead,tt5207766,98,7.6,6760.0
+7,16,The First Day of the Rest of Your Life,2017,The Walking Dead,tt5207772,99,7.6,12057.0
+8,1,Mercy,2017,The Walking Dead,tt6156390,100,6.8,10530.0
+8,2,The Damned,2017,The Walking Dead,tt6198638,101,6.6,8505.0
+8,3,Monsters,2017,The Walking Dead,tt6198656,102,6.3,7843.0
+8,4,Some Guy,2017,The Walking Dead,tt6198662,103,6.8,7771.0
+8,5,The Big Scary U,2017,The Walking Dead,tt6198668,104,7.3,6912.0
+8,6,"The King, the Widow and Rick",2017,The Walking Dead,tt6207930,105,6.1,6564.0
+8,7,Time for After,2017,The Walking Dead,tt6325296,106,6.5,6255.0
+8,8,How It's Gotta Be,2017,The Walking Dead,tt6327118,107,6.7,8487.0
+8,9,Honor,2018,The Walking Dead,tt6337078,108,6.8,7182.0
+8,10,The Lost and the Plunderers,2018,The Walking Dead,tt6337088,109,7.7,5954.0
+8,11,Dead or Alive Or,2018,The Walking Dead,tt6337096,110,7.1,5287.0
+8,12,The Key,2018,The Walking Dead,tt6337098,111,8.1,6199.0
+8,13,Do Not Send Us Astray,2018,The Walking Dead,tt6337102,112,7.3,5502.0
+8,14,Still Gotta Mean Something,2018,The Walking Dead,tt6337116,113,7.3,5302.0
+8,15,Worth,2018,The Walking Dead,tt6337114,114,7.8,5231.0
+8,16,Wrath,2018,The Walking Dead,tt6337120,115,7.5,7115.0
+9,1,A New Beginning,2018,The Walking Dead,tt7901208,116,7.4,6918.0
+9,2,The Bridge,2018,The Walking Dead,tt8230772,117,7.8,5848.0
+9,3,Warning Signs,2018,The Walking Dead,tt8232860,118,7.8,5549.0
+9,4,The Obliged,2018,The Walking Dead,tt8244690,119,8.1,5723.0
+9,5,What Comes After,2018,The Walking Dead,tt8250812,120,9.2,10994.0
+9,6,Who Are You Now?,2018,The Walking Dead,tt8250818,121,7.9,5691.0
+9,7,Stradivarius,2018,The Walking Dead,tt8250820,122,7.2,5210.0
+9,8,Evolution,2018,The Walking Dead,tt8250824,123,8.9,7064.0
+9,9,Adaptation,2019,The Walking Dead,tt8250826,124,8.0,4595.0
+9,10,Omega,2019,The Walking Dead,tt8250828,125,8.0,4664.0
+9,11,Bounty,2019,The Walking Dead,tt8250830,126,7.9,4548.0
+9,12,Guardians,2019,The Walking Dead,tt8250832,127,7.9,4313.0
+9,13,Chokepoint,2019,The Walking Dead,tt8250834,128,8.4,4622.0
+9,14,Scars,2019,The Walking Dead,tt8250838,129,8.1,4895.0
+9,15,The Calm Before,2019,The Walking Dead,tt8250840,130,9.4,8810.0
+9,16,The Storm,2019,The Walking Dead,tt7958876,131,7.6,5189.0
+10,1,Lines We Cross,2019,The Walking Dead,tt9728352,132,7.6,4371.0
+10,2,We Are the End of the World,2019,The Walking Dead,tt9729150,133,7.1,4049.0
+10,3,Ghosts,2019,The Walking Dead,tt9729152,134,7.8,3618.0
+10,4,Silence the Whisperers,2019,The Walking Dead,tt9729154,135,7.3,3411.0
+10,5,What It Always Is,2019,The Walking Dead,tt9729158,136,8.3,3619.0
+10,6,Bonds,2019,The Walking Dead,tt9729156,137,8.0,3193.0
+10,7,Open Your Eyes,2019,The Walking Dead,tt9729160,138,7.9,3280.0
+10,8,The World Before,2019,The Walking Dead,tt9729162,139,7.3,3137.0
+10,9,Squeeze,2020,The Walking Dead,tt9729164,140,7.5,3060.0
+10,10,Stalker,2020,The Walking Dead,tt9729166,141,8.2,3087.0
+10,11,Morning Star,2020,The Walking Dead,tt9729176,142,8.4,3122.0
+10,12,Walk with Us,2020,The Walking Dead,tt9729172,143,9.2,4505.0
+10,13,What We Become,2020,The Walking Dead,tt9729178,144,8.0,3451.0
+10,14,Look at the Flowers,2020,The Walking Dead,tt9729182,145,8.1,2482.0
+10,15,The Tower,2020,The Walking Dead,tt9729180,146,7.7,2243.0

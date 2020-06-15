@@ -1,16 +1,63 @@
 {% extends "base.html" %}
 
 {% block content %}
+<style>
+    ul {
+          display: table;
+          margin: 0 auto;
+        }
+    p {
+        text-align: center;
+    }
+</style>
+
+<script>
+    function change(value){
+          document.getElementById("show_form").value= value;
+          }
+</script>
 <div class="container">
-        <div class="jumbotron bg-info text-white"> 
-            <form action="" method="post" role="form">
-                <div class="form-group">
-                    <input type="text" class="form-control" id="name" name="show" placeholder="What is your show?"
-                           required oninvalid="this.setCustomValidity('Please Enter A TV Series')" oninput="this.setCustomValidity('')">
-                    <button type="submit" class="btn btn-success">Seach For Show</button>
-                </div>
-            </form>  
+    <div class="jumbotron bg-info text-white"> 
+        <div class="row">
+            <div class="col text-center">
+                <form action="" method="post" role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="show_form" name="show" placeholder="Type the Name of a Show"
+                               required oninvalid="this.setCustomValidity('Please Enter A TV Series')" oninput="this.setCustomValidity('')"><br>
+                        <button type="submit" class="btn btn-success">Seach For Show</button>
+                    </div>
+                </form>  
+            </div>
         </div>
     </div>
+    <div class="jumbotron bg-info text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 border-right border-left">
+                    <h3 class="display-4" style="text-align: center"><strong>How to Use</strong></h3><br>
+                    <p>Type in the name of a TV Series / Show and click the green button. Make sure the name is as close to the actual name of the show as possible. Then select the actual show on the next page and wait for your visual to load</p>
+                </div>
+                <div class="col-md-6 border-right">
+                    <p><strong>Click on One of the Examples Below</strong></p>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-6 border-right">
+                            <p><a onclick="change(this.text)">Breaking Bad</a></p>
+                            <p><a onclick="change(this.text)">The Office</a></p>
+                            <p><a onclick="change(this.text)">Rick and Morty</a></p>
+                            <p><a onclick="change(this.text)">Stranger Things</a></p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p><a onclick="change(this.text)">Parks and Recreation</a></p>
+                            <p><a onclick="change(this.text)">Arrow</a></p>
+                            <p><a onclick="change(this.text)">The Walking Dead</a></p>
+                            <p><a onclick="change(this.text)">Doctor Who</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
     
