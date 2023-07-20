@@ -26,8 +26,8 @@ for item in os.listdir(dir_name):
     if item.endswith(".csv"):
         os.remove(os.path.join(dir_name, item))
 
-# Init the flask server
-server = Flask(__name__,
+# Init the flask app
+app = Flask(__name__,
                instance_relative_config=False,
                template_folder="templates",
                static_folder="static")
@@ -47,7 +47,7 @@ ratings = ratings.set_index(['tconst'])
 
 
 # Final output of Dash App
-@server.route('/output/<file>/', methods=['GET', 'POST'])
+@app.route('/output/<file>/', methods=['GET', 'POST'])
 def display_output(file):
     if request.method == 'POST':
         filename = 'tmp/'+file+'.csv'
@@ -63,7 +63,7 @@ class Show_choices(Form):
     show = StringField('Show:', validators=[validators.DataRequired()])
 
 ## Choose the right show page
-@server.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def index():        
     form = Show_choices(request.form)
     imdb = IMDb()
@@ -79,8 +79,8 @@ def index():
                                year = year, names = names, length = len(names), ids = ids)
     return render_template('index.html')
 
-## Wait page: This splits the server load time for heroku 
-@server.route('/load_data/<ids>/', methods=['GET', 'POST'])
+## Wait page: This splits the app load time for heroku 
+@app.route('/load_data/<ids>/', methods=['GET', 'POST'])
 def load_data(ids):
     if request.method == 'POST':
         
@@ -92,7 +92,7 @@ def load_data(ids):
         return render_template('wait_page.html', pathname = pathname)
     return render_template('verify_show.html')
 
-@server.route('/about/', methods=['GET', 'POST'])
+@app.route('/about/', methods=['GET', 'POST'])
 def get_about():
     if request.method == 'POST':
         return render_template('about.html')
@@ -101,7 +101,7 @@ def get_about():
     return render_template('index.html')
 
 
-@server.errorhandler(500)
+@app.errorhandler(500)
 def page_not_found(e):
     return render_template('python_error.html')
 
@@ -209,4 +209,4 @@ def update_graph(df):
 
         
 if __name__ == '__main__':
-    server.run(use_reloader = False)
+    app.run(use_reloader = False)
