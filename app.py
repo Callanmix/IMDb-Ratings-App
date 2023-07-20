@@ -2,7 +2,7 @@
 
 # Flask
 from flask import Flask, request, render_template, redirect, url_for
-from wtforms import Form, validators, TextField
+from wtforms import Form, validators, StringField
 
 # General
 from imdb import IMDb
@@ -60,7 +60,7 @@ def display_output(file):
 
 # form for the show entry
 class Show_choices(Form):
-    show = TextField('Show:', validators=[validators.DataRequired()])
+    show = StringField('Show:', validators=[validators.DataRequired()])
 
 ## Choose the right show page
 @server.route('/', methods=['GET', 'POST'])
