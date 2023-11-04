@@ -21,11 +21,6 @@ for item in os.listdir(dir_name):
     if item.endswith(".html"):
         os.remove(os.path.join(dir_name, item))
         
-dir_name = "tmp/"
-for item in os.listdir(dir_name):
-    if item.endswith(".csv"):
-        os.remove(os.path.join(dir_name, item))
-
 # Init the flask app
 app = Flask(__name__,
                instance_relative_config=False,
